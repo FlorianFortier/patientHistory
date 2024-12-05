@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: 'mongo:latest'
+    environment:
+      - 'MONGO_INITDB_DATABASE=patientHistory'
+      - 'MONGO_INITDB_ROOT_PASSWORD=secret'
+      - 'MONGO_INITDB_ROOT_USERNAME=root'
+    ports:
+      - '27018:27017'
+    networks:
+      - springboot-network
+  patientHistory:
+    image: patient-history:latest
+    build: .
+    ports:
+      - "9103:9103"
+    environment:
+      - SPRING_APPLICATION_NAME=patientHistory
+      - SERVER_PORT=9103
+    networks:
+      - springboot-network
+
+networks:
+  springboot-network:
+    external: true
